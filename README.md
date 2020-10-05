@@ -7,7 +7,7 @@ This gem adds rules to RuboCop to detect misspelled OmbuLabs and FastRuby.io nam
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rubocop-ombu_labs', require: false, github: "fastruby/rubocop-ombu_labs"
+gem 'rubocop-ombu_labs', require: false, github: "fastruby/rubocop-ombu_labs", branch: :main
 ```
 
 And then execute:
