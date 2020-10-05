@@ -20,10 +20,15 @@ module RuboCop
         extend AutoCorrector
 
         MSG = 'Wrong branding, use "%<replacement>s"'
-        OMBULABS_RGX = /(ombu\s?labs)/i.freeze
-        OMBULABS_VALID = "OmbuLabs"
+        OMBULABS_RGX = /(ombu\s?labs[^"]?)/i.freeze
+        OMBULABS_BRAND = "OmbuLabs"
+        # ombulabs-styleguide or ombulabs/styleguide should count as misspelled
+        OMBULABS_VALIDS = ["OmbuLabs", "ombulabs-", "ombulabs/"]
         FASTRUBY_RGX = /(fast\s?ruby.?i?o?)/i.freeze
-        FASTRUBY_VALID = "FastRuby.io"
+        FASTRUBY_BRAND = "FastRuby.io"
+
+        # fastruby-styleguide or fastruby/styleguide should count as misspelled
+        FASTRUBY_VALIDS = ["FastRuby.io", "fastruby-", "fastruby/"]
 
         def on_str(node)
           check_ombu_labs(node)
@@ -34,11 +39,11 @@ module RuboCop
           return unless node.source =~ OMBULABS_RGX
 
           found = $1
-          return if found == OMBULABS_VALID
+          return if OMBULABS_VALIDS.include?(found)
 
-          msg = format(MSG, replacement: OMBULABS_VALID)
+          msg = format(MSG, replacement: OMBULABS_BRAND)
           add_offense(node, message: msg) do |corrector|
-            corrector.replace(node, OMBULABS_VALID)
+            corrector.replace(node, OMBULABS_BRAND)
           end
         end
 
@@ -46,11 +51,11 @@ module RuboCop
           return unless node.source =~ FASTRUBY_RGX
 
           found = $1
-          return if found == FASTRUBY_VALID
+          return if FASTRUBY_VALIDS.include?(found)
 
-          msg = format(MSG, replacement: FASTRUBY_VALID)
+          msg = format(MSG, replacement: FASTRUBY_BRAND)
           add_offense(node, message: msg) do |corrector|
-            corrector.replace(node, FASTRUBY_VALID)
+            corrector.replace(node, FASTRUBY_BRAND)
           end
         end
       end

@@ -35,10 +35,16 @@ RSpec.describe RuboCop::Cop::OmbuLabs::Branding, :config do
     RUBY
   end
 
-  it 'registers an offense when using `Ombu Labs`' do
+  it 'does not register an offense when using `ombulabs-...` gem names' do
+    expect_no_offenses(<<~RUBY)
+      "ombulabs-styleguide"
+    RUBY
+  end
+
+  it 'registers an offense when using `Fastruby.io`' do
     expect_offense(<<~RUBY)
-      "Ombu Labs"
-      ^^^^^^^^^^^ Wrong branding, use "OmbuLabs"
+      "Fastruby.io"
+      ^^^^^^^^^^^^^ Wrong branding, use "FastRuby.io"
     RUBY
   end
 
@@ -67,6 +73,12 @@ RSpec.describe RuboCop::Cop::OmbuLabs::Branding, :config do
   it 'does not register an offense when using `FastRuby.io`' do
     expect_no_offenses(<<~RUBY)
       "FastRuby.io"
+    RUBY
+  end
+
+  it 'does not register an offense when using `fastruby/...` repos' do
+    expect_no_offenses(<<~RUBY)
+      "fastruby/rubocup-ombu_labs"
     RUBY
   end
 end
